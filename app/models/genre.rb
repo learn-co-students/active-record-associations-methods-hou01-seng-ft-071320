@@ -13,15 +13,8 @@ class Genre < ActiveRecord::Base
   end
 
   def all_artist_names
-    # return an array of strings containing every musician's name
-    artist_name = []
-      Song.all.group(:artist_id).map do |song| song.artist_id
-        Artist.all.each do |artist|
-          if artist.id == song.artist_id
-            artist_name << artist.name
-          end
-        end
-      end
-      artist_name
+    Song.all.group(:artist_id)
+    .map{|song| Artist.find_by(id: song.artist_id)}
+    .map{|artist| artist.name}
   end
 end
